@@ -1,3 +1,17 @@
+/**
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*                                                             *
+*            Програмування паралельний комп'ютерних сисем     *
+*             Курсова робота. ПРГ1. Бібліотека OpenMP         *
+*                                                             *
+* Завдання: A = B(MO*MK)*a + min(Z)*E*MR                      *
+*                                                             *
+* Автор Кузьменко Володимир                                   *
+* Група ІО-21                                                 *
+* Датаe 23.03.15                                              *
+*                                                             *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
 
 
 #include "stdafx.h"
@@ -7,7 +21,7 @@ using namespace std;
 
 #include "operations.h"
 #include <iostream>
-
+/*Введення вектора*/
 vector inputVector(int value){
 	vector result = new int[N];
 	for (int i = 0; i < N; i++)
@@ -16,7 +30,7 @@ vector inputVector(int value){
 	}
 	return result;
 }
-
+/*введення матриці*/
 matrix inputMatrix(int value){
 	matrix result = new vector[N];
 	for (int i = 0; i < N; i++)
@@ -33,6 +47,7 @@ matrix inputMatrix(int value){
 	}
 	return result;
 }
+/*Виведення вектора*/
 void output(vector v) {
 	   	if (N <= 20) {
 		    for (int i = 0; i < N; i++) {
@@ -41,7 +56,7 @@ void output(vector v) {
 		 cout << endl;
 		}
 }
-
+/*Копіювання вектора*/
 vector copyVector(vector v){
 	vector result = new int[N];
 	for (int i = 0; i < N; i++)
@@ -50,7 +65,7 @@ vector copyVector(vector v){
 	}
 	return result;
 }
-
+/*Копіювання матриці*/
 matrix copyMatrix(matrix m){
 	matrix result = new vector[N];
 	for (int i = 0; i < N; i++)
@@ -67,17 +82,12 @@ matrix copyMatrix(matrix m){
 	}
 	return result;
 }
-
+/*Ініціалізація матриці*/
 matrix initMatrix(){
 	matrix result = new vector[N];
 	for (int i = 0; i < N; i++)
 	{
 		result[i] = new int[N];
 	}
-	return result;
-}
-
-vector initVector(){
-	vector result = new int[N];
 	return result;
 }

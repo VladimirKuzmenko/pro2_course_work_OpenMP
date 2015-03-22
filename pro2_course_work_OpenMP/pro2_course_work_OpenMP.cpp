@@ -1,5 +1,17 @@
-﻿// pro2_course_work_OpenMP.cpp : Defines the entry point for the console application.
-//
+﻿     /**
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                                                             *
+     *            Програмування паралельний комп'ютерних сисем     *
+     *             Курсова робота. ПРГ1. Бібліотека OpenMP         *
+     *                                                             *
+     * Завдання: A = B(MO*MK)*a + min(Z)*E*MR                      *
+     *                                                             *
+     * Автор Кузьменко Володимир                                   *
+     * Група ІО-21                                                 *
+     * Датаe 23.03.15                                              *
+     *                                                             *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    */
 
 #include "stdafx.h"
 #include "omp.h"
@@ -7,6 +19,7 @@
 #include <iostream>
 #include "operations.h"
 #include <ctime>
+#include <clocale>
 
 
 using namespace std;
@@ -25,14 +38,14 @@ omp_lock_t lock_Copy;
 int main()
 {
 	unsigned int start_time = clock();
-
+	setlocale(LC_ALL, "Russian");
 	omp_init_lock(&lock_Copy);
 	omp_set_num_threads(P);
 #pragma omp parallel
 	{
 		int tid = omp_get_thread_num();
 		MA = initMatrix();
-		cout << "Task" << tid << " started"<<endl;
+		cout << "Задача " << tid << " стартувала"<<endl;
 		switch (tid)
 		{
 			/*1. Якщо tid = 0 Ввести α, B, MK, MR.*/
@@ -71,11 +84,9 @@ int main()
 		matrix MOid;
 		/*7. Копіювати MOi=MO*/
 		omp_set_lock(&lock_Copy);
-
 		MOid = copyMatrix(MO);
-
 		omp_unset_lock(&lock_Copy);
-		
+		/*8. Обчислення MAH = MOi∙MKH*/
 		int sum;
 		for (int i = tid * H; i < (tid + 1) * H; i++) {
 			for (int j = 0; j < N; j++) {
@@ -86,11 +97,12 @@ int main()
 				MA[i][j] = sum;
 			}
 		}
-
+		/*9. Бар’єр для усіх задач. Синхронізація по обрахунку MA*/
 #pragma omp barrier
 		vector Bid;
 		vector Eid;
 		int alfaId;
+		/*10. Копіювати minZi = minZ, αi = α, Bi = B, Ei = E*/
 #pragma omp critical
 		{
 			alfaId = alfa;
@@ -99,7 +111,7 @@ int main()
 			Eid = copyVector(E);
 			
 		}
-
+		/*11. Обчислення AH = αi∙Bi∙MAH + minZi∙Ei∙MRH, i = (0,P-1)*/
 		int buf;
 		for (int i = tid*H; i < (tid + 1)*H; i++)
 		{
@@ -116,18 +128,19 @@ int main()
 			}
 			A[i] += buf*minZid;
 		}
-
+		/*12. Бар’єр для усіх задач. Синхронізація по обчисленню A*/
 #pragma omp barrier
-		if (tid==P-1)
+		/*13. Якщо tid = 0 вивести результат AH.*/
+		if (tid==0)
 		{
 			output(A);
 		}
 
-		cout << "Task" << tid << " finished" << endl;
+		cout << "Задача " << tid << " завершилась" << endl;
 	}
-	unsigned int end_time = clock(); // конечное время
-	unsigned int search_time = end_time - start_time; // искомое время
-	cout << "Time working" << search_time << endl;
+	unsigned int end_time = clock(); 
+	unsigned int search_time = end_time - start_time; 
+	cout << "Час роботи: " << search_time << endl;
 	return 0;
 }
 
