@@ -1,7 +1,7 @@
 typedef int* vector;
 typedef int** matrix;
 
-const int N = 12;
+const int N = 1200;
 
 vector inputVector(int);
 matrix inputMatrix(int);
