@@ -106,8 +106,6 @@ int main()
 		}
 		/*9. Бар’єр для усіх задач. Синхронізація по обрахунку MA*/
 #pragma omp barrier
-		
-
 		/*10. Обчислення AH = αi∙Bi∙MAH + minZi∙Ei∙MRH, i = (0,P-1)*/
 		int buf;
 		for (int i = tid*H; i < (tid + 1)*H; i++)

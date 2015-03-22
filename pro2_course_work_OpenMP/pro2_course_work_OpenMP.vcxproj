@@ -14,6 +14,7 @@
     <ProjectGuid>{C51EFAEE-B48D-43D1-9372-7C5DB2B9A675}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>pro2_course_work_OpenMP</RootNamespace>
+    <ProjectName>pro2_course_work_prg1</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -86,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="operations.cpp" />
-    <ClCompile Include="pro2_course_work_OpenMP.cpp" />
+    <ClCompile Include="pro2_course_work_prg1.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

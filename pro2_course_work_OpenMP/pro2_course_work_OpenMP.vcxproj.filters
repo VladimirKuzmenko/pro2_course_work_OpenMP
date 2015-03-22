@@ -32,10 +32,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pro2_course_work_OpenMP.cpp">
+    <ClCompile Include="operations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="operations.cpp">
+    <ClCompile Include="pro2_course_work_prg1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
