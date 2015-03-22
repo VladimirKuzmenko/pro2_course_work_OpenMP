@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include <windows.h>
 
+
 using namespace std;
 
 #include "operations.h"
