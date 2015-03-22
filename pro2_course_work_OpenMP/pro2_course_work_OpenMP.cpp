@@ -82,9 +82,16 @@ int main()
 		/*6. Бар’єр для усіх задач. Синхронізація по обрахунку minZ*/
 #pragma omp barrier
 		matrix MOid;
-		/*7. Копіювати MOi=MO*/
+		vector Bid;
+		vector Eid;
+		int alfaId;
+		/*7. Копіювати MOi=MO, minZi = minZ, αi = α, Bi = B, Ei = E*/
 		omp_set_lock(&lock_Copy);
 		MOid = copyMatrix(MO);
+		alfaId = alfa;
+		minZid = minZ;
+		Bid = copyVector(B);
+		Eid = copyVector(E);
 		omp_unset_lock(&lock_Copy);
 		/*8. Обчислення MAH = MOi∙MKH*/
 		int sum;
@@ -99,19 +106,9 @@ int main()
 		}
 		/*9. Бар’єр для усіх задач. Синхронізація по обрахунку MA*/
 #pragma omp barrier
-		vector Bid;
-		vector Eid;
-		int alfaId;
-		/*10. Копіювати minZi = minZ, αi = α, Bi = B, Ei = E*/
-#pragma omp critical
-		{
-			alfaId = alfa;
-			minZid = minZ;
-			Bid = copyVector(B);
-			Eid = copyVector(E);
-			
-		}
-		/*11. Обчислення AH = αi∙Bi∙MAH + minZi∙Ei∙MRH, i = (0,P-1)*/
+		
+
+		/*10. Обчислення AH = αi∙Bi∙MAH + minZi∙Ei∙MRH, i = (0,P-1)*/
 		int buf;
 		for (int i = tid*H; i < (tid + 1)*H; i++)
 		{
@@ -128,9 +125,9 @@ int main()
 			}
 			A[i] += buf*minZid;
 		}
-		/*12. Бар’єр для усіх задач. Синхронізація по обчисленню A*/
+		/*11. Бар’єр для усіх задач. Синхронізація по обчисленню A*/
 #pragma omp barrier
-		/*13. Якщо tid = 0 вивести результат AH.*/
+		/*12. Якщо tid = 0 вивести результат AH.*/
 		if (tid==0)
 		{
 			output(A);
