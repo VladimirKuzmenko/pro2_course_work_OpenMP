@@ -18,15 +18,15 @@
 #include <windows.h>
 #include <iostream>
 #include "operations.h"
+#include <ctime>
+#include <clocale>
+
 
 using namespace std;
 
 #pragma comment(linker, "/stack:160000000")
 
 const int P = 6;
-
-
-
 
 int main()
 {
@@ -38,6 +38,7 @@ int main()
 	const int H = N / P;
 	omp_lock_t lock_Copy;
 	double start_time = omp_get_wtime();
+
 	setlocale(LC_ALL, "Russian");
 	omp_init_lock(&lock_Copy);
 	omp_set_num_threads(P);
@@ -133,7 +134,6 @@ int main()
 
 		cout << "Задача " << tid << " завершилась" << endl;
 	}
-
 	double end_time = omp_get_wtime();
 	double  elapsedTime = end_time - start_time;
 	cout << "Час роботи: " << elapsedTime << endl;
