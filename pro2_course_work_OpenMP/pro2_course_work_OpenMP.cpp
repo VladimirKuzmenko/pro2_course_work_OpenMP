@@ -2,10 +2,23 @@
 //
 
 #include "stdafx.h"
+#include "omp.h"
+#include <windows.h>
+#include <iostream>
 
 
-int _tmain(int argc, _TCHAR* argv[])
+using namespace std;
+
+const int N = 12;
+const int P = 4;
+const int H = N / P;
+
+
+//vector A = new int[N], B, C;
+
+int main()
 {
+	
 	return 0;
 }
 
