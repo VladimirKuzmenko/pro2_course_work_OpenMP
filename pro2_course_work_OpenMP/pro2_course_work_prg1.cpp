@@ -26,7 +26,7 @@ using namespace std;
 
 #pragma comment(linker, "/stack:160000000")
 
-const int P = 6;
+const int P = 5;
 
 int main()
 {
@@ -94,27 +94,20 @@ int main()
 		Bid = copyVector(B);
 		Eid = copyVector(E);
 		omp_unset_lock(&lock_Copy);
-		/*8. Обчислення MAH = MOi∙MKH*/
-		int sum;
-		for (int i = tid * H; i < (tid + 1) * H; i++) {
-			for (int j = 0; j < N; j++) {
-				sum = 0;
-				for (int z = 0; z < N; z++) {
-					sum += MOid[i][j] * MK[j][z];
-				}
-				MA[i][j] = sum;
-			}
-		}
-		/*9. Бар’єр для усіх задач. Синхронізація по обрахунку MA*/
-#pragma omp barrier
-		/*10. Обчислення AH = αi∙Bi∙MAH + minZi∙Ei∙MRH, i = (0,P-1)*/
+	
+		/*8. Обчислення AH = αi∙Bi∙(MOi∙MKH) + minZi∙Ei∙MRH, i = (0,P-1)*/
 		int buf;
+		int sum;
 		for (int i = tid*H; i < (tid + 1)*H; i++)
 		{
 			A[i] = 0;
 			for (int j = 0; j < N; j++)
 			{
-				A[i] += Bid[j] * MA[j][i];
+				sum = 0;
+				for (int z = 0; z < N; z++) {
+					sum += MOid[i][j] * MK[j][z];
+				}
+				A[i] += Bid[j] * sum;
 			}
 			A[i] = A[i] * alfaId;
 			buf = 0;
@@ -124,9 +117,9 @@ int main()
 			}
 			A[i] += buf*minZid;
 		}
-		/*11. Бар’єр для усіх задач. Синхронізація по обчисленню A*/
+		/*9. Бар’єр для усіх задач. Синхронізація по обчисленню A*/
 #pragma omp barrier
-		/*12. Якщо tid = 0 вивести результат AH.*/
+		/*10. Якщо tid = 0 вивести результат AH.*/
 		if (tid==0)
 		{
 			output(A);
